@@ -1,0 +1,15 @@
+function [acceptableRecords,unacceptableRecords]=loadLabels()
+%     [FileName,PathName] = uigetfile('*.*','Select acceptable records file');
+%     filename = fullfile(PathName,FileName);
+    filename='data/RECORDS-acceptable';
+    acceptableRecords=loadLabelFile(filename);
+%     [FileName,PathName] = uigetfile('*.*','Select unacceptable reocrds file');
+%     filename = fullfile(PathName,FileName); 
+    filename='data/RECORDS-unacceptable';
+    unacceptableRecords=loadLabelFile(filename);
+% [FileName,PathName] = uigetfile('*.*','Select acceptable records file');
+% filename = fullfile(PathName,FileName); 
+% acceptableRecords=loadLabelFile(filename);
+% [FileName,PathName] = uigetfile('*.*','Select unacceptable reocrds file');
+% filename = fullfile(PathName,FileName); 
+% unacceptableRecords=loadLabelFile(filename);
