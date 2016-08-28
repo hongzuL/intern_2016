@@ -1,6 +1,8 @@
 clear,close all,
-[acceptableRecords,unacceptableRecords]=loadLabels();
-[FileName,PathName] = uigetfile('C:/Users/HONGZU/Documents/ECG_data/*.csv','Select a data file');
+userDir = getuserdir();
+truePath=strcat(userDir,'\ECG_data\*.csv');
+[acceptableRecords,unacceptableRecords]=loadLabels(userDir);
+[FileName,PathName] = uigetfile(truePath,'Select a data file');
 filename = fullfile(PathName,FileName); 
 fs=500;%sampling frequency is 500
 [input_features,straightLine]=mainAlgorithm(filename,fs);
@@ -11,4 +13,4 @@ else
     input_features=[input_features' 0];
 end
 %% clear temp data
-clearvars filename FileName PathName straightLine fs name acceptableRecords unacceptableRecords;
+clearvars filename FileName PathName straightLine fs name acceptableRecords unacceptableRecords userDir truePath;

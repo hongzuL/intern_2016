@@ -35,88 +35,93 @@ function [input_features,straightLine]=mainAlgorithm(filename,fs)
     %% signal pre-processing
     [I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME]=preProcessing(TIME_ABSOLUTE,MDC_ECG_LEAD_I,MDC_ECG_LEAD_II,MDC_ECG_LEAD_III,MDC_ECG_LEAD_AVR,MDC_ECG_LEAD_AVL,MDC_ECG_LEAD_AVF,MDC_ECG_LEAD_V1,MDC_ECG_LEAD_V2,MDC_ECG_LEAD_V3,MDC_ECG_LEAD_V4,MDC_ECG_LEAD_V5,MDC_ECG_LEAD_V6);
 %     figure(2),plot(I);
+    [pathstr,name,ext]=fileparts(filename);
+    ECG=horzcat(I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6);
+    nsamp=5000;
+    nsig=12;
+    desc=char({'I';'II';'III';'aVR';'aVF';'aVL';'V1';'V2';'V3';'V4';'V5';'V6'});
+    heasig=struct('recname',name,'nsig',nsig,'freq',fs,'nsamp',nsamp,'desc',desc);
+    save(name,'ECG','heasig');
+    name=strcat(name,'.mat');
 %     WFDBfile=writeToWFDB(filename,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,fs);
     %txtFile=writeTotxt(filename,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME);
-%     QRSdetection(WFDBfile);
+    RQS_filename=QRSdetection(name);
     %% load QRS data
-%     [pathstr,name,ext]=fileparts(filename);
-%     filename = fullfile('data',name); 
-%     s2='_QRS_detection.mat';
-%     RQS_filename=strcat(filename,s2);
-%     load(RQS_filename);
-%     disp(RQS_filename)
-%     % calculate the features for each lead
-%     fi=0;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,1);
-%     features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
-%     fi=fi+6;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,2);
-%         features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
-%     fi=fi+6;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,3);
-%         features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
-%     fi=fi+6;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,4);
-%         features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
-%     fi=fi+6;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,5);
-%         features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
-%     fi=fi+6;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,6);
-%         features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
-%     fi=fi+6;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,7);
-%         features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
-%     fi=fi+6;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,8);
-%         features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
-%     fi=fi+6;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,9);
-%         features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
-%     fi=fi+6;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,10);
-%         features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
-%     fi=fi+6;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,11);
-%         features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
-%     fi=fi+6;
-%     [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,12);
-%         features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
-%     for i=1:6
-%         input_features(fi+i)=features(i);
-%     end
+    load(RQS_filename);
+    disp(RQS_filename)
+    % calculate the features for each lead
+    fi=0;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,1);
+    features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    fi=fi+6;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,2);
+        features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    fi=fi+6;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,3);
+        features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    fi=fi+6;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,4);
+        features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    fi=fi+6;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,5);
+        features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    fi=fi+6;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,6);
+        features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    fi=fi+6;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,7);
+        features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    fi=fi+6;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,8);
+        features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    fi=fi+6;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,9);
+        features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    fi=fi+6;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,10);
+        features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    fi=fi+6;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,11);
+        features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    fi=fi+6;
+    [iSQI,bSQI,pSQI,sSQI,kSQI,fSQI]=calculateFeatures(fs,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,epltdqrs1_I,epltdqrs1_II,epltdqrs1_III,epltdqrs1_aVF,epltdqrs1_aVL,epltdqrs1_aVR,epltdqrs1_V1,epltdqrs1_V2,epltdqrs1_V3,epltdqrs1_V4,epltdqrs1_V5,epltdqrs1_V6,wqrs_I,wqrs_II,wqrs_III,wqrs_aVF,wqrs_aVL,wqrs_aVR,wqrs_V1,wqrs_V2,wqrs_V3,wqrs_V4,wqrs_V5,wqrs_V6,12);
+        features=[iSQI,bSQI,pSQI,sSQI,kSQI,fSQI];
+    for i=1:6
+        input_features(fi+i)=features(i);
+    end
+    delete(RQS_filename);
     %% clear temp data
     clearvars filename delimiter startRow formatSpec fileID dataArray ans;
