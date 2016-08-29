@@ -8,7 +8,6 @@ temp_ulabel_train=[];
 temp_alabel_test=[];
 temp_ulabel_test=[];
 for l=1:R
-    unacceptable_array = datasample(unacceptable_array,acceptable_count,'Replace',true);
     [temp_acceptableLabels_train,temp_unacceptableLabels_train,temp_acceptableLabels_test,temp_unacceptableLabels_test]=SOMcluster(acceptable_array,unacceptable_array,test_acceptable_array,test_unacceptable_array);
     temp_alabel_train=[temp_alabel_train;temp_acceptableLabels_train'];
     temp_ulabel_train=[temp_ulabel_train;temp_unacceptableLabels_train'];

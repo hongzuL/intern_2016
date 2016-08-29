@@ -1,5 +1,5 @@
 clear 
-load('TrainingData.mat')
+load('tempData/TrainingData.mat')
 NBModelAll = fitcnb(inputData,label);
 CVNBModel = crossval(NBModelAll);
 classLoss = kfoldLoss(CVNBModel);

@@ -1,5 +1,5 @@
 clear 
-load('TrainingData.mat')
+load('tempData/TrainingData.mat')
 SVMModelAll = fitcsvm(inputData,label,'Standardize',true,'KernelFunction','RBF','KernelScale','auto');%kernel scale 0.1-8
 CVSVMModel = crossval(SVMModelAll);
 classLoss = kfoldLoss(CVSVMModel);

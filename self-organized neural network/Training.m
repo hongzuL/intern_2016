@@ -1,5 +1,5 @@
 clear,close all
-load 'tempData_12-Aug-2016.mat'
+load 'tempData/tempData_12-Aug-2016.mat'
 %% training model
 [trueUnacceptable_count,falseUnacceptable_count]=straightLineErr(straigtLine_name,acceptableRecords);
 acceptable_count=0;
@@ -20,7 +20,8 @@ for i=1:temp_count
         unacceptable_array=[unacceptable_array;temp(i,:)];  
     end
 end
-clearvars acceptableRecords aRecords_name bool featureNum i name saveName straigtLine_name temp temp_count tempRecords unacceptableRecords uRecords_name
+unacceptable_array = datasample(unacceptable_array,acceptable_count,'Replace',true);
+clearvars acceptable_count unacceptable_count acceptableRecords aRecords_name bool featureNum i name saveName straigtLine_name temp temp_count tempRecords unacceptableRecords uRecords_name
 save('TrainingData')
 % cross-validation
 for Kfold=2:10
@@ -49,7 +50,6 @@ for Kfold=2:10
         temp_alabel_test=[];
         temp_ulabel_test=[];
         for j=1:R
-            utraining_data = datasample(utraining_data,sum(a_train),'Replace',true);
             [temp_acceptableLabels_train,temp_unacceptableLabels_train,temp_acceptableLabels_test,temp_unacceptableLabels_test]=SOMcluster(atraining_data,utraining_data,atesting_data,utesting_data);
             temp_alabel_train=[temp_alabel_train;temp_acceptableLabels_train'];
             temp_ulabel_train=[temp_ulabel_train;temp_unacceptableLabels_train'];
@@ -62,6 +62,8 @@ for Kfold=2:10
         unacceptableLabels_test=zeros(length(temp_unacceptableLabels_test),1);
         for k=1:length(temp_acceptableLabels_train)
             acceptableLabels_train(k)=mode(temp_alabel_train(:,k));
+        end
+        for k=1:length(temp_unacceptableLabels_train)
             unacceptableLabels_train(k)=mode(temp_ulabel_train(:,k));
         end
         for h=1:length(acceptableLabels_test)

@@ -1,5 +1,5 @@
 clear 
-load('TrainingData.mat')
+load('tempData/TrainingData.mat')
 LDAModelAll = fitcdiscr(inputData,label);
 CVLDAModel = crossval(LDAModelAll);
 classLoss = kfoldLoss(CVLDAModel);

@@ -1,5 +1,5 @@
 clear
-load('TrainingData.mat')
+load('tempData/TrainingData.mat')
 labelA=zeros(length(label),1);%acceptable
 labelU=zeros(length(label),1);%unacceptable
 labelA(label==1)=1;

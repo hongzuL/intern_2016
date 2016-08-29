@@ -1,6 +1,9 @@
 clear,close all,
-[acceptableRecords,unacceptableRecords]=loadLabels();
-Files=dir('data/*.csv');
+userDir = getuserdir();
+truePath=strcat(userDir,'\ECG_data\data\*.csv');
+pathName=strcat(userDir,'\ECG_data\data\');
+[acceptableRecords,unacceptableRecords]=loadLabels(userDir);
+Files=dir(truePath);
 fs=500;%sampling frequency is 500
 ISQI='I-iSQI,I-bSQI,I-pSQI,I-sSQI,I-kSQI,I-fSQI';
 IISQI='II-iSQI,II-bSQI,II-pSQI,II-sSQI,II-kSQI,II-fSQI';
@@ -17,26 +20,38 @@ V6SQI='V6-iSQI,V6-bSQI,V6-pSQI,V6-sSQI,V6-kSQI,V6-fSQI';
 label='label';
 fileID = fopen('seta-train.csv','w');
 fprintf(fileID,'%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n',ISQI,IISQI,IIISQI,AVRSQI,AVLSQI,AVFSQI,V1SQI,V2SQI,V3SQI,V4SQI,V5SQI,V6SQI,label);
+skip=0;
 for i=1:length(Files)
-    filename = fullfile('data',Files(i).name); 
+    filename = fullfile(pathName,Files(i).name); 
     s1=num2str((i/length(Files))*100);
     s2='%';
-    disp(strcat(s1,s2));
-    [input_features,straightLine]=mainAlgorithm(filename,fs);
-    [bool,name]=isAcceptable(filename,acceptableRecords);
-    if bool>=1
-        input_features=[input_features' 1];
+%     disp(strcat(s1,s2));
+    [abool,name]=isAcceptable(filename,acceptableRecords);
+    [ubool,name]=isUnacceptable(filename,unacceptableRecords);
+    if abool>=1
+        skip=0;
+    elseif ubool>=1
+        skip=0;
     else
-        input_features=[input_features' -1];
+        skip=1;
+        disp(i);
     end
-    for j=1:length(input_features)
-        if j==length(input_features)
-            fprintf(fileID,'%d\n',input_features(j));
-        else
-            fprintf(fileID,'%d,',input_features(j));
-        end
+    if skip==0
+%         [input_features,straightLine]=mainAlgorithm(filename,fs);
+%         if abool>=1
+%             input_features=[input_features' 1];
+%         elseif ubool>=1
+%             input_features=[input_features' -1];
+%         end
+%         for j=1:length(input_features)
+%             if j==length(input_features)
+%                 fprintf(fileID,'%d\n',input_features(j));
+%             else
+%                 fprintf(fileID,'%d,',input_features(j));
+%             end
+%         end
     end
 end
 fclose(fileID);
 %% clear temp data
-clearvars filename FileName PathName straightLine fs name acceptableRecords unacceptableRecords fileID ISQI IISQI IIISQI AVRSQI AVLSQI AVFSQI V1SQI V2SQI V3SQI V4SQI V5SQI V6SQI label bool Files i j s1 s2 ans;
+clearvars truePath userDir filename FileName pathName straightLine fs name  unacceptableRecords fileID ISQI IISQI IIISQI AVRSQI AVLSQI AVFSQI V1SQI V2SQI V3SQI V4SQI V5SQI V6SQI label bool Files i j s1 s2 ans;
