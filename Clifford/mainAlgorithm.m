@@ -30,23 +30,26 @@ function [input_features,straightLine]=mainAlgorithm(filename,fs)
     MDC_ECG_LEAD_V4 = dataArray{:, 11};
     MDC_ECG_LEAD_V5 = dataArray{:, 12};
     MDC_ECG_LEAD_V6 = dataArray{:, 13};
-
+    
 %     figure(1),plot(MDC_ECG_LEAD_I);
     %% signal pre-processing
     [I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME]=preProcessing(TIME_ABSOLUTE,MDC_ECG_LEAD_I,MDC_ECG_LEAD_II,MDC_ECG_LEAD_III,MDC_ECG_LEAD_AVR,MDC_ECG_LEAD_AVL,MDC_ECG_LEAD_AVF,MDC_ECG_LEAD_V1,MDC_ECG_LEAD_V2,MDC_ECG_LEAD_V3,MDC_ECG_LEAD_V4,MDC_ECG_LEAD_V5,MDC_ECG_LEAD_V6);
+%     len_sum=isStraghtline(I,TIME)+isStraghtline(II,TIME)+isStraghtline(III,TIME)+isStraghtline(AVR,TIME)+isStraghtline(AVL,TIME)+isStraghtline(AVF,TIME)+isStraghtline(V1,TIME)+isStraghtline(V2,TIME)+isStraghtline(V3,TIME)+isStraghtline(V4,TIME)+isStraghtline(V5,TIME)+isStraghtline(V6,TIME);
+%     straightLine=len_sum;
 %     figure(2),plot(I);
     [pathstr,name,ext]=fileparts(filename);
-    ECG=horzcat(I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6);
-    nsamp=5000;
-    nsig=12;
-    desc=char({'I';'II';'III';'aVR';'aVF';'aVL';'V1';'V2';'V3';'V4';'V5';'V6'});
-    heasig=struct('recname',name,'nsig',nsig,'freq',fs,'nsamp',nsamp,'desc',desc);
-    save(name,'ECG','heasig');
-    name=strcat(name,'.mat');
-%     WFDBfile=writeToWFDB(filename,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME,fs);
-    %txtFile=writeTotxt(filename,I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME);
-    RQS_filename=QRSdetection(name);
-    %% load QRS data
+%     ECG=horzcat(I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6);
+%     nsamp=5000;
+%     nsig=12;
+%     desc=char({'I';'II';'III';'aVR';'aVF';'aVL';'V1';'V2';'V3';'V4';'V5';'V6'});
+%     heasig=struct('recname',name,'nsig',nsig,'freq',fs,'nsamp',nsamp,'desc',desc);
+%     save(name,'ECG','heasig');
+%     name=strcat(name,'.mat');
+    userDir = getuserdir();
+%     name=strcat(userDir,'\internship2016\Clifford\',name);
+%     RQS_filename=QRSdetection(name);
+    % load QRS data
+    RQS_filename=strcat(userDir,'\ECG_data\badECG\',name,'_QRS_detection.mat');
     load(RQS_filename);
     disp(RQS_filename)
     % calculate the features for each lead
