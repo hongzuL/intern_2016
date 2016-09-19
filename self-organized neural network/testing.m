@@ -1,8 +1,6 @@
 clear
 load('TrainingData.mat')
 R=10;
-test_acceptable_array=acceptable_array; %get test data
-test_unacceptable_array=unacceptable_array;
 temp_alabel_test=[];
 temp_ulabel_test=[];
 for l=1:R

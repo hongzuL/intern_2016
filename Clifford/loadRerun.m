@@ -70,7 +70,8 @@ end
 
 %% Allocate imported array to column variable names
 outarray = cell2mat(raw(:, 1));
-
-
+outarray = unique(outarray);
+fid=fopen(filename,'wt');
+fclose(fid);
 %% Clear temporary variables
 clearvars filename delimiter formatSpec fileID dataArray ans raw col numericData rawData row regexstr result numbers invalidThousandsSeparator thousandsRegExp me;

@@ -1,27 +1,27 @@
 clear,close all
-load 'tempData/tempData_12-Aug-2016.mat'
+load 'tempData/tempData_16-Sep-2016level2.mat'
 %% training model
 [trueUnacceptable_count,falseUnacceptable_count]=straightLineErr(straigtLine_name,acceptableRecords);
 acceptable_count=0;
 unacceptable_count=0;
-uRecords_name={};
-aRecords_name={};
 acceptable_array=[];
 unacceptable_array=[];
 for i=1:temp_count
-    [bool,name]=isAcceptable(tempRecords{i},acceptableRecords);
-    if bool>=1
+    curr_row=temp(i,:);
+    if curr_row(length(curr_row))==1
         acceptable_count=acceptable_count+1;
-        aRecords_name{acceptable_count}=name;
-        acceptable_array=[acceptable_array;temp(i,:)];       
+        acceptable_array=[acceptable_array;curr_row(1:length(curr_row)-1)];       
     else
         unacceptable_count=unacceptable_count+1;
-        uRecords_name{unacceptable_count}=name;
-        unacceptable_array=[unacceptable_array;temp(i,:)];  
+        unacceptable_array=[unacceptable_array;curr_row(1:length(curr_row)-1)];  
     end
 end
+%get test data
+test_acceptable_array=acceptable_array; 
+test_unacceptable_array=unacceptable_array;
+%balance data
 unacceptable_array = datasample(unacceptable_array,acceptable_count,'Replace',true);
-clearvars acceptable_count unacceptable_count acceptableRecords aRecords_name bool featureNum i name saveName straigtLine_name temp temp_count tempRecords unacceptableRecords uRecords_name
+clearvars acceptable_count unacceptable_count acceptableRecords bool featureNum i name saveName straigtLine_name temp temp_count tempRecords unacceptableRecords
 temp_alabel_train=[];
 temp_ulabel_train=[];
 R=10;
@@ -38,7 +38,7 @@ end
 for f=1:length(unacceptableLabels)
     unacceptableLabels(f)=mode(temp_ulabel_train(:,f));
 end
-
+clearvars abool curr_row e f l skip temp_alabel_train temp_ulabel_train temp_acceptableLabels temp_unacceptableLabels ubool userDir truePath pathName R
 save('TrainingData')
 % cross-validation
 % for Kfold=2:10
