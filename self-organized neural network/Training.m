@@ -6,19 +6,29 @@ acceptable_count=0;
 unacceptable_count=0;
 acceptable_array=[];
 unacceptable_array=[];
+percent=0.8;
+test_acceptable_array=[];
+test_unacceptable_array=[];
 for i=1:temp_count
     curr_row=temp(i,:);
-    if curr_row(length(curr_row))==1
-        acceptable_count=acceptable_count+1;
-        acceptable_array=[acceptable_array;curr_row(1:length(curr_row)-1)];       
-    else
-        unacceptable_count=unacceptable_count+1;
-        unacceptable_array=[unacceptable_array;curr_row(1:length(curr_row)-1)];  
+    if i<=percent*temp_count %get training set
+        if curr_row(length(curr_row))==1
+            acceptable_count=acceptable_count+1;
+            acceptable_array=[acceptable_array;curr_row(1:length(curr_row)-1)];       
+        else
+            unacceptable_count=unacceptable_count+1;
+            unacceptable_array=[unacceptable_array;curr_row(1:length(curr_row)-1)];  
+        end
+    else %get testing set
+        if curr_row(length(curr_row))==1
+            acceptable_count=acceptable_count+1;
+            test_acceptable_array=[test_acceptable_array;curr_row(1:length(curr_row)-1)];       
+        else
+            unacceptable_count=unacceptable_count+1;
+            test_unacceptable_array=[test_unacceptable_array;curr_row(1:length(curr_row)-1)];  
+        end
     end
 end
-%get test data
-test_acceptable_array=acceptable_array; 
-test_unacceptable_array=unacceptable_array;
 %balance data
 unacceptable_array = datasample(unacceptable_array,acceptable_count,'Replace',true);
 clearvars acceptable_count unacceptable_count acceptableRecords bool featureNum i name saveName straigtLine_name temp temp_count tempRecords unacceptableRecords

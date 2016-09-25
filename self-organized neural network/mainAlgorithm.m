@@ -31,8 +31,6 @@ function [input_features,straghtLine]=mainAlgorithm(filename,level)
     MDC_ECG_LEAD_V5 = dataArray{:, 12};
     MDC_ECG_LEAD_V6 = dataArray{:, 13};
 %     figure(1),plot(MDC_ECG_LEAD_I);
-    %% clear temp data
-    clearvars filename delimiter startRow formatSpec fileID dataArray ans;
     %% signal pre-processing
     [I,II,III,AVR,AVL,AVF,V1,V2,V3,V4,V5,V6,TIME]=preProcessing(TIME_ABSOLUTE,MDC_ECG_LEAD_I,MDC_ECG_LEAD_II,MDC_ECG_LEAD_III,MDC_ECG_LEAD_AVR,MDC_ECG_LEAD_AVL,MDC_ECG_LEAD_AVF,MDC_ECG_LEAD_V1,MDC_ECG_LEAD_V2,MDC_ECG_LEAD_V3,MDC_ECG_LEAD_V4,MDC_ECG_LEAD_V5,MDC_ECG_LEAD_V6);
 %     figure(2),plot(I);

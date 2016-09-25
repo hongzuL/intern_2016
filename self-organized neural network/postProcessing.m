@@ -1,7 +1,7 @@
 function input_features=postProcessing(I,II,V1,V2,V3,V4,V5,V6,level)
 %% Dower transformation
     [VX,VY,VZ]=DowerTransformation(I,II,V1,V2,V3,V4,V5,V6);
-    [UTRP_all,TRP_all]=RPs(VX,VY,VZ);
+%     [UTRP_all,TRP_all]=RPs(VX,VY,VZ);
 %     figure(3),imagesc(UTRP_all);
 %     figure(4),imshow(flip(~TRP_all,1));
     %% Multiscale recurrence analysis

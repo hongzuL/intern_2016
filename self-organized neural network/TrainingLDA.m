@@ -1,5 +1,5 @@
 clear 
-load('tempData/tempData_16-Sep-2016level2.mat')
+load('tempData/tempData_23-Sep-2016level2.mat')
 inputData=temp(:,1:length(temp(1,:))-1);
 label=temp(:,length(temp(1,:)));
 LDAModelAll = fitcdiscr(inputData,label);
