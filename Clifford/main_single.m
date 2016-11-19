@@ -16,6 +16,6 @@ elseif ubool>=1
 else
     input_features=[input_features 0];
 end
-% singleTest(input_features);
+singleTest(input_features);
 %% clear temp data
 clearvars filename FileName PathName straightLine fs name acceptableRecords unacceptableRecords userDir truePath;
