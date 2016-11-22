@@ -1,7 +1,7 @@
 function RQS_filename=QRSdetection(filename)
 
     ECGw = ECGwrapper('recording_name',filename);
-    plot_ecg_strip(ECGw);
+%     plot_ecg_strip(ECGw);
     ECGw.ECGtaskHandle='QRS_detection';
     ECGw.ECGtaskHandle.only_ECG_leads=true;
     ECGw.ECGtaskHandle.detectors={'wqrs','epltdqrs1'};
