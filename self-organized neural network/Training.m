@@ -1,5 +1,5 @@
 clear,close all
-load 'tempData/tempData_16-Sep-2016level2.mat'
+load 'tempData_29-Nov-2016level2.mat'
 %% training model
 [trueUnacceptable_count,falseUnacceptable_count]=straightLineErr(straigtLine_name,acceptableRecords);
 acceptable_count=0;

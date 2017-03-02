@@ -130,5 +130,5 @@ function [input_features,straightLine]=mainAlgorithm(filename,fs)
         end
     %     delete(RQS_filename);
     else
-        input_features=zeros(1,72);
+        input_features=zeros(72,1);
     end

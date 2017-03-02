@@ -1,7 +1,7 @@
 clear,close all,
 userDir = getuserdir();
-truePath=strcat(userDir,'\ECG_data\balanceData\*.csv');
-pathName=strcat(userDir,'\ECG_data\balanceData\');
+truePath=strcat(userDir,'\ECG_data\data\*.csv');
+pathName=strcat(userDir,'\ECG_data\data\');
 [acceptableRecords,unacceptableRecords]=loadLabels(userDir);
 Files=dir(truePath);
 fs=500;%sampling frequency is 500

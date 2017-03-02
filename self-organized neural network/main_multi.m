@@ -1,4 +1,5 @@
 clear,close all,
+tic,
 userDir = getuserdir();
 [acceptableRecords,unacceptableRecords]=loadLabels(userDir);
 truePath=strcat(userDir,'\ECG_data\data\*.csv');
@@ -9,7 +10,7 @@ straightLine_count=0;
 temp_count=0;
 tempRecords={};
 straigtLine_name={};
-level=2;
+level=3;
 featureNum=(2^level)*6;
 for i=1:length(Files)
     filename = fullfile(pathName,Files(i).name); 
@@ -45,3 +46,4 @@ d = date;
 saveName=strcat('tempData_',d,'level',num2str(level));
 clearvars Files level s1 s2 filename input_features straightLine d i featureNum
 save(saveName)
+toc; 

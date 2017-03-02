@@ -22,12 +22,12 @@ function p_label=predictLabel(input_features,straightLine)
         disp(testLabel)
         %test with MLP
         disp('Multi-Layer Perceptron neural network:')
-        MLPlabelcount=0;
+        MPlabelcount=0;
         for Hnode=1:28
             testLabel=TestingMLP(Hnode,inputData);
-            MLPlabelcount=MLPlabelcount+testLabel;
+            MPlabelcount=MPlabelcount+testLabel;
         end
-        if MLPlabelcount>0
+        if MPlabelcount>0
             testLabel=1;
         elseif MPlabelcount<0
             testLabel=-1;
