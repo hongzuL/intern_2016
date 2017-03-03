@@ -2,9 +2,9 @@ function outArray=loadLabelFile(filename)
     delimiter = '';
 
     %% Format string for each line of text:
-    %   column1: double (%f)
+    %   column1: text (%s)
     % For more information, see the TEXTSCAN documentation.
-    formatSpec = '%f%[^\n\r]';
+    formatSpec = '%s%[^\n\r]';
 
     %% Open the text file.
     fileID = fopen(filename,'r');
@@ -26,7 +26,3 @@ function outArray=loadLabelFile(filename)
 
     %% Allocate imported array to column variable names
     outArray = dataArray{:, 1};
-
-
-    %% Clear temporary variables
-    clearvars filename delimiter formatSpec fileID dataArray ans;
