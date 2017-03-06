@@ -6,4 +6,5 @@ CVSVMModel = crossval(SVMModelAll);
 classLoss = kfoldLoss(CVSVMModel);
 disp(1-classLoss)
 %% clear temp data
+clearvars inputData label
 save('SVMtrain');

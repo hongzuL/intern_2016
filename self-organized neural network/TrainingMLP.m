@@ -9,4 +9,5 @@ label=horzcat(labelA,labelU);
 [netC,performance,percentError]=MLPNN(inputData,label);
 disp(1-min(percentError));
 %% clear temp data
+clearvars inputData label
 save('MLPtrain');

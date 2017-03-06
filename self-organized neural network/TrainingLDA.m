@@ -6,4 +6,5 @@ CVLDAModel = crossval(LDAModelAll);
 classLoss = kfoldLoss(CVLDAModel);
 disp(1-classLoss)
 %% clear temp data
+clearvars inputData label
 save('LDAtrain');

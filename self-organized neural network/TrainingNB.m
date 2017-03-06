@@ -7,4 +7,5 @@ classLoss = kfoldLoss(CVNBModel);
 disp(1-classLoss)
    
 %% clear temp data
+clearvars inputData label
 save('NBtrain');
