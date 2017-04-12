@@ -11,10 +11,10 @@ for i=1:length(Files)
     filename = fullfile(pathName,Files(i).name); 
     s1=num2str((i/length(Files))*100);
     s2='%';
-    %disp(strcat(s1,s2));
+    disp(strcat(s1,s2));
     [abool,name]=isAcceptable(filename,acceptableRecords);
     [ubool,name]=isUnacceptable(filename,unacceptableRecords);
-    %disp(name);
+%     disp(name);
     % there are two files missing
     if abool>=1
         skip=0;
@@ -29,11 +29,11 @@ for i=1:length(Files)
         skip=1;
     end
     
-    if(ismember(name,rerun_array)>=1)
-        skip=0;
-    else
-        skip=1;
-    end
+%     if(ismember(name,rerun_array)>=1)
+%         skip=0;
+%     else
+%         skip=1;
+%     end
     if skip==0
         [input_features,straightLine]=mainAlgorithm(filename,fs);
         input_features=input_features';
