@@ -1,7 +1,9 @@
 clear,close all,
 userDir = getuserdir();
-truePath=strcat(userDir,'\ECG_data\data\*.csv');
-pathName=strcat(userDir,'\ECG_data\data\');
+% truePath=strcat(userDir,'\ECG_data\data\*.csv');
+% pathName=strcat(userDir,'\ECG_data\data\');
+truePath=strcat(userDir,'\internship2016\Tools\OurECGdata\*.csv');
+pathName=strcat(userDir,'\internship2016\Tools\OurECGdata\');
 [acceptableRecords,unacceptableRecords]=loadLabels(userDir);
 Files=dir(truePath);
 fs=500;%sampling frequency is 500
@@ -28,7 +30,7 @@ for i=1:length(Files)
     else
         skip=1;
     end
-    
+%     
 %     if(ismember(name,rerun_array)>=1)
 %         skip=0;
 %     else
@@ -45,6 +47,8 @@ for i=1:length(Files)
         save(strcat('tmpInputfeatures/',name,'_InputFeatures'),'input_features');
     end
 end
+NumOfFiles = length(Files);
+save('NumOfFiles.mat','NumOfFiles')
 % multiTest(writeFile);
 %% clear temp data
 clearvars truePath userDir filename FileName pathName straightLine fs name  unacceptableRecords fileID ISQI IISQI IIISQI AVRSQI AVLSQI AVFSQI V1SQI V2SQI V3SQI V4SQI V5SQI V6SQI label bool Files i j s1 s2 ans;

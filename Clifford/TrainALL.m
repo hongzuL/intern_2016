@@ -12,26 +12,32 @@ V4SQI='V4-iSQI,V4-bSQI,V4-pSQI,V4-sSQI,V4-kSQI,V4-fSQI';
 V5SQI='V5-iSQI,V5-bSQI,V5-pSQI,V5-sSQI,V5-kSQI,V5-fSQI';
 V6SQI='V6-iSQI,V6-bSQI,V6-pSQI,V6-sSQI,V6-kSQI,V6-fSQI';
 label='label';
-writeFile='tempData/20170302.csv';
-fileID = fopen(writeFile,'w');
-fprintf(fileID,'%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n',ISQI,IISQI,IIISQI,AVRSQI,AVLSQI,AVFSQI,V1SQI,V2SQI,V3SQI,V4SQI,V5SQI,V6SQI,label);
 Files=dir('tmpInputfeatures\*.mat');
-for i=1:length(Files)
-    load(strcat('tmpInputfeatures\',Files(i).name));
-    for j=1:length(input_features)
-        if j==length(input_features)
-            fprintf(fileID,'%d\n',input_features(j));
-        else
-            fprintf(fileID,'%d,',input_features(j));
+writeFile='tempData/20170428.csv';
+if exist(writeFile, 'file') ~= 2
+    disp('file does not exist');
+    fileID = fopen(writeFile,'w');
+    fprintf(fileID,'%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n',ISQI,IISQI,IIISQI,AVRSQI,AVLSQI,AVFSQI,V1SQI,V2SQI,V3SQI,V4SQI,V5SQI,V6SQI,label);
+    for i=1:length(Files)
+        load(strcat('tmpInputfeatures\',Files(i).name));
+        for j=1:length(input_features)
+            if j==length(input_features)
+                fprintf(fileID,'%d\n',input_features(j));
+            else
+                fprintf(fileID,'%d,',input_features(j));
+            end
         end
+        delete(strcat('tmpInputfeatures\',Files(i).name));
+        %clearvars input_features;
     end
-    %clearvars input_features;
+    fclose(fileID);
+else
 end
-fclose(fileID);
+load('NumOfFiles.mat');
 startRow=2;
-endRow=length(Files)+1;
-percent=80;
+endRow=NumOfFiles+1;
+percent=100;
 TrainingLDA(writeFile,startRow,endRow,percent);
 TrainingMLP(writeFile,startRow,endRow,percent);
-TrainingNB(writeFile,startRow,endRow,percent);
+% TrainingNB(writeFile,startRow,endRow,percent);
 TrainingSVM(writeFile,startRow,endRow,percent);

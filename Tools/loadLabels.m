@@ -1,9 +1,11 @@
 function [acceptableRecords,unacceptableRecords]=loadLabels(userDir)
 %     [FileName,PathName] = uigetfile('*.*','Select acceptable records file');
 %     filename = fullfile(PathName,FileName);
-    filename=strcat(userDir,'\ECG_data\data\RECORDS-acceptable');
+%     filename=strcat(userDir,'\ECG_data\data\RECORDS-acceptable');
+    filename=strcat(userDir,'\internship2016\Tools\OurECGdata\RECORDS-acceptable');
     acceptableRecords=loadLabelFile(filename);
 %     [FileName,PathName] = uigetfile('*.*','Select unacceptable reocrds file');
 %     filename = fullfile(PathName,FileName); 
-    filename=strcat(userDir,'\ECG_data\data\RECORDS-unacceptable');
+%     filename=strcat(userDir,'\ECG_data\data\RECORDS-unacceptable');
+    filename=strcat(userDir,'\internship2016\Tools\OurECGdata\RECORDS-unacceptable');
     unacceptableRecords=loadLabelFile(filename);

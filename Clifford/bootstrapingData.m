@@ -78,7 +78,20 @@ function [IiSQI,IbSQI,IpSQI,IsSQI,IkSQI,IfSQI,IIiSQI,IIbSQI,IIpSQI,IIsSQI,IIkSQI
     V6kSQI=resampleingData(V6kSQI,acceptableCount,unacceptableCount,label);
     V6fSQI=resampleingData(V6fSQI,acceptableCount,unacceptableCount,label);
     %% get new label
-    Alabel=label(label==1);
-    Ulabel=Alabel.*(-1);
+    if(acceptableCount>unacceptableCount)
+        %acceptable record more than unacceptable record, duplicate
+        %unacceptable array
+        Alabel=ones(acceptableCount,1);
+        Ulabel=(-1)*ones(acceptableCount,1);
+    elseif(acceptableCount<unacceptableCount)
+        %accpetable record less than unacceptable record, duplicate
+        %acceptable array
+        Alabel=ones(unacceptableCount,1);
+        Ulabel=(-1)*ones(unacceptableCount,1);
+    else
+        Alabel=ones(acceptableCount,1);
+        Ulabel=(-1)*ones(unacceptableCount,1);
+        %do nothing
+    end
     label=vertcat(Alabel,Ulabel);
     
